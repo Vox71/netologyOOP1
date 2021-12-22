@@ -10,6 +10,16 @@ class Student:
     def add_courses(self, course_name):
         self.finished_course.append(course_name)
 
+    def rate_lecturer(self, lecturer, course, grade):
+        if isinstance(lecturer,
+                      Lecturer) and course in self.courses_in_progress and course in lecturer.courses_attached:
+            if course in lecturer.grade_lecturer:
+                lecturer.grade_lecturer[course] += [grade]
+            else:
+                lecturer.grade_lecturer[course] = [grade]
+        else:
+            return 'Ошибка'
+
 
 class Mentor:
     def __init__(self, name, surname):
@@ -19,8 +29,8 @@ class Mentor:
 
 
 class Lecturer(Mentor):
-    def __init__(self, grade):
-        self.grade = grade
+    def __init__(self):
+        self.grade_lecturer = {}
 
 
 class Reviewer(Mentor):
