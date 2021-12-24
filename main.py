@@ -11,14 +11,22 @@ class Student:
         self.finished_course.append(course_name)
 
     def rate_lecturer(self, lecturer, course, grade):
-        if isinstance(lecturer,
-                      Lecturer) and course in self.courses_in_progress and course in lecturer.courses_attached:
-            if course in lecturer.grade_lecturer:
-                lecturer.grade_lecturer[course] += [grade]
-            else:
-                lecturer.grade_lecturer[course] = [grade]
+        if isinstance(lecturer, Lecturer) and course in lecturer.courses_attached and \
+                course in self.courses_in_progress and grade <= 10:
+            lecturer.grades += [grade]
         else:
-            return 'Ошибка'
+            return print("Ошибка")
+
+    def get_avg_grade(self):
+        sum_hw = 0
+        count = 0
+        if self.grades:
+            for grades in self.grades.values():
+                sum_hw += sum(grades)
+                count += len(grades)
+            return round(sum_hw / count, 2)
+        else:
+            return print('Нет оценок')
 
 
 class Mentor:
@@ -29,8 +37,20 @@ class Mentor:
 
 
 class Lecturer(Mentor):
-    def __init__(self):
-        self.grade_lecturer = {}
+    def __init__(self, name, surname):
+        super().__init__(name, surname)
+        self.grades = {}
+
+    def __str__(self):
+        res = f'Имя: {self.name} \n' \
+              f'Фамилия: {self.surname} \n' \
+              f'Средняя оценка за лекции: {sum(self.grades) / len(self.grades) :.2f} \n'
+        return res
+
+    def __str__(self):
+        res = f'Имя: {self.name} \n' \
+              f'Фамилия: {self.surname} \n'
+        return res
 
 
 class Reviewer(Mentor):
