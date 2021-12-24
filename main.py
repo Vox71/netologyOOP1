@@ -102,6 +102,23 @@ class Reviewer(Mentor):
         return res
 
 
+def get_avg_hw_grade(student_list, course):
+    total_sum = 0
+
+    for student in student_list:
+        for c, grades in student.grades.items():
+            if c == course:
+                total_sum += sum(grades) / len(grades)
+    return round(total_sum / len(student_list), 2)
+
+
+def get_avg_lec_grade(lecturer_list):
+    total_sum = 0
+    for lecturer in lecturer_list:
+        total_sum += sum(lecturer.grades) / len(lecturer.grades)
+    return round(total_sum / len(lecturer_list), 2)
+
+
 best_student = Student('Ruoy', 'Eman', 'your_gender')
 best_student.finished_courses += ['Git']
 best_student.courses_in_progress += ['Python']
@@ -121,9 +138,6 @@ first_reviewer.rate_hw(next_student, 'Python', 8)
 first_reviewer.rate_hw(best_student, 'Git', 10)
 first_reviewer.rate_hw(next_student, 'Git', 7)
 
-print(best_student.grades)
-print(next_student.grades)
-
 first_lecturer = Lecturer('Lucy', 'Westerna')
 first_lecturer.courses_attached += ['Python']
 first_lecturer.courses_attached += ['Git']
@@ -137,35 +151,15 @@ best_student.rate_lecturer(next_lecturer, 'Git', 8)
 next_student.rate_lecturer(first_lecturer, 'Python', 6)
 next_student.rate_lecturer(next_lecturer, 'Git', 9)
 
+print(best_student.grades)
+print(next_student.grades)
 print(first_lecturer.grades)
 print(next_lecturer.grades)
-
 print(next_student < best_student)
 print(first_lecturer < next_lecturer)
 print(next_student)
 print(first_reviewer)
 print(next_lecturer)
-
-
-def get_avg_hw_grade(student_list, course):
-    total_sum = 0
-
-    for student in student_list:
-        for c, grades in student.grades.items():
-            if c == course:
-                total_sum += sum(grades) / len(grades)
-    return round(total_sum / len(student_list), 2)
-
-
 print(get_avg_hw_grade([best_student, next_student], 'Python'))
 print(get_avg_hw_grade([best_student, next_student], 'Git'))
-
-
-def get_avg_lec_grade(lecturer_list):
-    total_sum = 0
-    for lecturer in lecturer_list:
-        total_sum += sum(lecturer.grades) / len(lecturer.grades)
-    return round(total_sum / len(lecturer_list), 2)
-
-
 print(get_avg_lec_grade([first_lecturer, next_lecturer]))
